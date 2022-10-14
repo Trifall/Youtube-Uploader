@@ -25,12 +25,18 @@
 
 ### Example command to run this script:
 
+```
 python Vod-Uploader.py --file="video_file_name.mp4" --description="description here" --category="22" --privacyStatus="unlisted" --keywords="keyword1,keyword2,keyword3" --title="Title here"
+```
 
 ### Example command for uploading and adding to a playlist:
 
+```
 python Vod-Uploader.py --file="video_file_name.mp4" --description="description here" --category="22" --privacyStatus="unlisted" --keywords="keyword1,keyword2,keyword3" --title="Title here" --playlistID="playlist id here"
+```
 
 ### Example command for strictly adding to a playlist manually:
 
+```
 python Vod-Uploader.py --file="" --playlistID="playlist id here" --skip-upload --videoID="video id here"
+```
