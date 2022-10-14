@@ -255,10 +255,11 @@ if __name__ == '__main__':
             print("An HTTP error %d occurred:\n%s" %
                   (e.resp.status, e.content))
 
-    if(args.videoID == ""):
+    if(args.videoID == "" and UPLOADED_VIDEO_ID == ""):
         print("No video ID found, skipping playlist update...")
     else:
-        UPLOADED_VIDEO_ID = args.videoID
+        if(UPLOADED_VIDEO_ID == ""):
+            UPLOADED_VIDEO_ID = args.videoID
         if (args.playlistID != ""):
             youtube_playlist_client = get_authenticated_service(
                 args, YOUTUBE_PLAYLIST_SCOPE)
