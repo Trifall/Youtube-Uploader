@@ -263,10 +263,11 @@ if __name__ == '__main__':
         if (args.playlistID != ""):
             youtube_playlist_client = get_authenticated_service(
                 args, YOUTUBE_PLAYLIST_SCOPE)
+            print("Adding video to playlist...")
             try:
                 add_video_to_playlist(youtube_playlist_client,
                                       UPLOADED_VIDEO_ID, args.playlistID)
             except HttpError as e:
                 print("An HTTP error %d occurred:\n%s" %
                       (e.resp.status, e.content))
-    print("Process finished.")
+    print("YouTube process finished")
