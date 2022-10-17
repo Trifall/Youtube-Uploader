@@ -216,7 +216,7 @@ def add_video_to_playlist(youtube, videoID, playlistID):
     ).execute()
 
     # log the response in the format of "Added video to playlist, ID: %s" % add_video_request['id']
-    print("Added video to playlist, ID: %s" % add_video_request['id'])
+    print("Added video to playlist - Request ID: %s" % add_video_request['id'])
 
 
 if __name__ == '__main__':
