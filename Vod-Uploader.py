@@ -250,35 +250,34 @@ if __name__ == '__main__':
         args.skip_upload = True
         # print the args
         print(args)
+        exit("Testing printed args. Exiting...")
 
     if(args.skip_upload):
         print("Skipping upload...")
     else:
         if not os.path.exists(args.file):
             exit("Please specify a valid file using the --file= parameter.")
-        if not args.testing:
-            youtube_upload_client = get_authenticated_service(
-                args, YOUTUBE_UPLOAD_SCOPE)
+        youtube_upload_client = get_authenticated_service(
+            args, YOUTUBE_UPLOAD_SCOPE)
+        try:
+            initialize_upload(youtube_upload_client, args)
+        except HttpError as e:
+            print("An HTTP error %d occurred:\n%s" %
+                  (e.resp.status, e.content))
+
+    if(args.videoID == "" and UPLOADED_VIDEO_ID == ""):
+        print("No video ID found, skipping playlist update...")
+    else:
+        if(UPLOADED_VIDEO_ID == ""):
+            UPLOADED_VIDEO_ID = args.videoID
+        if (args.playlistID != ""):
+            youtube_playlist_client = get_authenticated_service(
+                args, YOUTUBE_PLAYLIST_SCOPE)
+            print("Adding video to playlist...")
             try:
-                initialize_upload(youtube_upload_client, args)
+                add_video_to_playlist(youtube_playlist_client,
+                                      UPLOADED_VIDEO_ID, args.playlistID)
             except HttpError as e:
                 print("An HTTP error %d occurred:\n%s" %
                       (e.resp.status, e.content))
-    if not args.testing:
-        if(args.videoID == "" and UPLOADED_VIDEO_ID == ""):
-            print("No video ID found, skipping playlist update...")
-        else:
-            if(UPLOADED_VIDEO_ID == ""):
-                UPLOADED_VIDEO_ID = args.videoID
-            if (args.playlistID != ""):
-                youtube_playlist_client = get_authenticated_service(
-                    args, YOUTUBE_PLAYLIST_SCOPE)
-                print("Adding video to playlist...")
-                try:
-                    add_video_to_playlist(youtube_playlist_client,
-                                          UPLOADED_VIDEO_ID, args.playlistID)
-                except HttpError as e:
-                    print("An HTTP error %d occurred:\n%s" %
-                          (e.resp.status, e.content))
-        print("YouTube process finished")
-    print("Done")
+    print("YouTube process finished")
