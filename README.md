@@ -20,6 +20,7 @@
     - --playlistID - optional, takes playlist ID to add video to as a string. Skips if no value is passed.
     - --skip-upload - optional, binary flag (no input value), skips the upload step and just adds the video to a playlist.
     - --videoID - optional, takes video ID as a string. Skips the upload step and adds the video to a playlist manually. If using --skip-upload, this is required for the script to work.
+    - --testing - optional, binary flag. just prints the args that were passed into the script and exits.
 
 <hr />
 
