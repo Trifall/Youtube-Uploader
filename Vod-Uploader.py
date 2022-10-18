@@ -122,7 +122,7 @@ def initialize_upload(youtube, options):
         tags = options.keywords.split(",")
 
     # if options.title is equal to "Test Title", then set the title equal options.file
-    if options.title == "Test Title":
+    if options.title == "Untitled Video":
         options.title = extractFileNameFromPath(options.file)
 
     options.title = replaceDashesBeforeFirstSpace(options.title)
