@@ -87,17 +87,31 @@ def get_authenticated_service(args, _scope):
                                    scope=_scope,
                                    message=MISSING_CLIENT_SECRETS_MESSAGE)
 
-    if(_scope == YOUTUBE_PLAYLIST_SCOPE):
-        storage = Storage("%s-oauth2-general.json" % sys.argv[0])
-    else:
-        storage = Storage("%s-oauth2.json" % sys.argv[0])
+    # if(_scope == YOUTUBE_PLAYLIST_SCOPE):
+    storage = Storage("%s-oauth2-general.json" % sys.argv[0])
+    # else:
+    #     storage = Storage("%s-oauth2.json" % sys.argv[0])
     credentials = storage.get()
 
     if credentials is None or credentials.invalid:
         credentials = run_flow(flow, storage, args)
 
-    return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-                 http=credentials.authorize(httplib2.Http()))
+    # try to build, except the exception if the token is invalid or expired
+    try:
+        return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
+                     http=credentials.authorize(httplib2.Http()))
+    except:
+        try:
+            print("[Auth] Error: Invalid or expired token, attempting to refresh...")
+            # refresh the token
+            credentials.refresh(httplib2.Http())
+            print("[Auth] Token refreshed.")
+            return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
+                         http=credentials.authorize(httplib2.Http()))
+        except:
+            credentials = run_flow(flow, storage, args)
+            return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
+                         http=credentials.authorize(httplib2.Http()))
 
 # Replace the dashes before the first space in the string with forward slashes
 
@@ -244,6 +258,7 @@ if __name__ == '__main__':
 
     # implement an index flag to add the video to a specific index in the playlist
     args = argparser.parse_args()
+    args.noauth_local_webserver = True
 
     if args.testing:
         print("Testing mode enabled")
