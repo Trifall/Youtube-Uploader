@@ -280,6 +280,17 @@ if __name__ == '__main__':
             print("An HTTP error %d occurred:\n%s" %
                   (e.resp.status, e.content))
 
+            error_msg = e._get_reason()
+
+            # if the error message contained "title", then the title has an error, so retry with the title "Untitled Video"
+            if "title" in error_msg.lower():
+                print(
+                    "\nTitle Error Detected: Retrying with new title: \"Untitled Video\"")
+                args.title = "Untitled Video"
+                initialize_upload(youtube_upload_client, args)
+            else:
+                exit("Exiting...")
+
     if(args.videoID == "" and UPLOADED_VIDEO_ID == ""):
         print("No video ID found, skipping playlist update...")
     else:
