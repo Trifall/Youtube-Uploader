@@ -285,8 +285,8 @@ if __name__ == '__main__':
             # if the error message contained "title", then the title has an error, so retry with the title "Untitled Video"
             if "title" in error_msg.lower():
                 print(
-                    "\nTitle Error Detected: Retrying with new title: \"Untitled Video\"")
-                args.title = "Untitled Video"
+                    "\nTitle Error Detected: Retrying with new title: \"Untitled Video - manual override\"")
+                args.title = "Untitled Video - manual override"
                 initialize_upload(youtube_upload_client, args)
             else:
                 exit("Exiting...")
