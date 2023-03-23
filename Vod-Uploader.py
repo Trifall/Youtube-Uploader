@@ -118,6 +118,8 @@ def get_authenticated_service(args, _scope):
 
 def replaceDashesBeforeFirstSpace(string):
     index = string.find(" ")
+    if(index == -1):
+        return string
     return string[:index].replace("-", "/") + string[index:]
 
 
