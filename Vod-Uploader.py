@@ -173,7 +173,14 @@ def initialize_upload(youtube, options):
         media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True)
     )
 
-    resumable_upload(insert_request)
+    # call `resumable_upload(insert_request)` method to upload the video, catch if there is an error, and sleep for 60 seconds, then try again
+    try:
+        resumable_upload(insert_request)
+        break
+    except:
+        print("[Upload] Error: Upload failed, retrying in 30 seconds...")
+        return False
+
 
 # This method implements an exponential backoff strategy to resume a
 # failed upload.
