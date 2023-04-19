@@ -176,7 +176,6 @@ def initialize_upload(youtube, options):
     # call `resumable_upload(insert_request)` method to upload the video, catch if there is an error, and sleep for 60 seconds, then try again
     try:
         resumable_upload(insert_request)
-        break
     except:
         print("[Upload] Error: Upload failed, retrying in 30 seconds...")
         return False
