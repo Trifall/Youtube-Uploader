@@ -54,8 +54,7 @@ CLIENT_SECRETS_FILE = "client_secrets.json"
 
 # This OAuth 2.0 access scope allows an application to upload files to the
 # authenticated user's YouTube channel, but doesn't allow other types of access.
-YOUTUBE_UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
-YOUTUBE_PLAYLIST_SCOPE = "https://www.googleapis.com/auth/youtube"
+YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube"
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
@@ -87,7 +86,6 @@ def get_authenticated_service(args, _scope):
                                    scope=_scope,
                                    message=MISSING_CLIENT_SECRETS_MESSAGE)
 
-    # if(_scope == YOUTUBE_PLAYLIST_SCOPE):
     storage = Storage("%s-oauth2-general.json" % sys.argv[0])
     # else:
     #     storage = Storage("%s-oauth2.json" % sys.argv[0])
@@ -281,7 +279,7 @@ if __name__ == '__main__':
         if not os.path.exists(args.file):
             exit("Please specify a valid file using the --file= parameter.")
         youtube_upload_client = get_authenticated_service(
-            args, YOUTUBE_UPLOAD_SCOPE)
+            args, YOUTUBE_SCOPE)
         try:
             initialize_upload(youtube_upload_client, args)
         except HttpError as e:
@@ -306,7 +304,7 @@ if __name__ == '__main__':
             UPLOADED_VIDEO_ID = args.videoID
         if (args.playlistID != ""):
             youtube_playlist_client = get_authenticated_service(
-                args, YOUTUBE_PLAYLIST_SCOPE)
+                args, YOUTUBE_SCOPE)
             print("Adding video to playlist...")
             try:
                 add_video_to_playlist(youtube_playlist_client,
